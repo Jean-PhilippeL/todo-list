@@ -1,0 +1,38 @@
+<h1>
+    Yet another TODO list
+</h1>
+<h3>
+    Ce qui est fait n'est plus à faire !
+</h3>
+
+<h4 >A faire</h4>
+<mat-list>
+	@for (item of tasks; track item.id) {
+		@if (!item.completed) { 
+			<mat-list-item>
+				<mat-checkbox [checked]="item.completed" (change)="updateTask(item.id, $event.checked)" >{{$index}} - {{ item.name }}</mat-checkbox>
+				<button mat-icon-button (click)="deleteTask(item.id)" matTooltip="Supprimer {{item.name}}" matTooltipPosition= "right"><mat-icon>delete</mat-icon></button>
+			</mat-list-item>
+		}
+	} 
+</mat-list>
+
+<mat-form-field  >
+	<mat-label>Ajouter une tâche</mat-label>
+	<input matInput placeholder="Ex. acheter du pain" [(ngModel)]="newTaskName"/>
+</mat-form-field>&nbsp;
+<button  mat-fab (click)="addNewTask()" [disabled]="!newTaskName"><mat-icon>add</mat-icon></button>
+
+<h4>Fait</h4>
+<mat-list>
+@for (item of tasks; track item.id) {
+	@if (item.completed) { 
+		<mat-list-item>
+			<mat-checkbox [checked]="item.completed" (change)="updateTask(item.id, $event.checked)" ><s>{{$index}} - {{ item.name }}</s></mat-checkbox>
+			<button mat-icon-button (click)="deleteTask(item.id)" matTooltip="Supprimer {{item.name}}" matTooltipPosition= "right"><mat-icon>delete</mat-icon></button>
+		</mat-list-item>
+	}
+}
+</mat-list>
+
+ 

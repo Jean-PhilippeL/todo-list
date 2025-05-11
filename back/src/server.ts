@@ -26,32 +26,31 @@ app.get('/api/ping', (req: Request, res: Response) => {
 });
 
 
-app.get('/api/add/:name', (req: Request, res: Response) => {
+app.put('/api/add/:name', (req: Request, res: Response) => {
     let allTasks: Task[] = readTasksFromFile();
     
     const newTask: Task = {
         name: req.params.name,
-        status: "created",
+        completed: false,
         id: uuidv4()
     };
 
     allTasks.push(newTask);
 
-    saveTasksToFile(allTasks)
-	res.status(201).json(newTask);
+    saveTasksToFile(allTasks);
 	res.status(201).json(newTask);
 });
 
-app.get('/api/delete/:id', (req: Request, res: Response) => {
+app.delete('/api/delete/:id', (req: Request, res: Response) => {
     let allTasks: Task[] = readTasksFromFile().filter(t => t.id != req.params.id);
     saveTasksToFile(allTasks)
 	res.json({ message: 'deleted : ' + req.params.id });
 });
 
-app.get('/api/update/:id/:status', (req: Request, res: Response) => {
+app.patch('/api/update/:id/:completed', (req: Request, res: Response) => {
     let allTasks: Task[] = readTasksFromFile()
 	allTasks.filter(t => t.id === req.params.id).forEach(t => {
-			t.status = req.params.status
+			t.completed = JSON.parse(req.params.completed)
 	});
     saveTasksToFile(allTasks)
 	res.json({ message: 'updated : ' + req.params.id });
